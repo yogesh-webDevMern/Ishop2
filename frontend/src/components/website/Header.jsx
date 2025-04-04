@@ -14,7 +14,7 @@ export default function Header() {
   const menuitems = [
     {
       name:"Home",
-      path:"/home"
+      path:"/"
     },
     {
       name:"STORE",
@@ -41,7 +41,7 @@ export default function Header() {
   return (
 
 <>
-<div className="header w-full">
+<div className="header shadow pb-4 w-full">
   <div className="max-w-[1300px] py-2 px-5 mx-auto">
     <div className='flex items-center justify-between  md:justify-end gap-5 font-bold text-[#262626]'>
     <div className='flex  gap-2 cursor-pointer items-center justify-between'>
@@ -74,7 +74,7 @@ export default function Header() {
     </div>
     </div>
   </div>
-  <h1 className='text-center font-bold text-3xl text-[#FF4252] mt-4'>iSHOP</h1>
+  <h1 className='text-center font-bold text-3xl text-[#FF4252] mt-4 mb-3'>iSHOP</h1>
 <div className="menuItems  max-w-[600px]  mx-auto flex justify-center items-center">
   <ul className='flex gap-5 fs'>
  {
@@ -89,7 +89,7 @@ export default function Header() {
  }
   </ul>
   {/*  Responsive */}
-  <div className={`fixed md:hidden backdrop-blur-[23px] w-full flex -webkit-backdrop-filter
+  <div className={`fixed z-[9999999] md:hidden backdrop-blur-[23px] w-full flex -webkit-backdrop-filter
  justify-center items-center flex-col  bg-gradient-to-b from-[#FF4252] to-[#fff] duration-300  h-screen p-[50px] top-[90px] left-[-100%] ${open ? "left-[0]":""}`}>
   <div className='w-[60%] relative'>
   <CiSearch className='absolute transform top-[50%] left-[10px] -translate-y-1/2' />

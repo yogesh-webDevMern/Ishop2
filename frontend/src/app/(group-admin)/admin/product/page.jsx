@@ -72,7 +72,7 @@ export default function Page() {
           </thead>
           <tbody>
             {
-              filteredProducts.length > 0 ? filteredProducts.map((prod, index) => (
+              filteredProducts.length > 0 ? filteredProducts?.map((prod, index) => (
                 <tr key={prod._id} className="hover:bg-gray-50">
                   <td className="p-2 border text-black">{index + 1}</td>
                   <td className="p-2 border">{prod.name}/{prod.slug}</td>
@@ -84,18 +84,18 @@ export default function Page() {
                     <img className='rounded-lg' width={70} height={100} src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/images/product/${prod.main_image}`} alt="" />
 
                   </td>
-                  <td className="p-2 border">{prod.category_id.name}</td>
+                  <td className="p-2 border">{prod.category_id?.name}</td>
                   <td className="p-5 border">
                     <ul className='list-disc text-center'>
 
 
                       {
-                        prod.colors.map((color) => {
+                        prod.colors?.map((color,index) => {
                           return (
-                            <>
+                            <div key={index}>
                               <li >{color.name}</li>
                               <div style={{ backgroundColor: color.name }} className={`w-[60px] mx-auto h-[20px] rounded-full`}></div>
-                            </>
+                            </div>
                           )
                         })
                       }
@@ -134,4 +134,3 @@ export default function Page() {
 
   )
 }
-

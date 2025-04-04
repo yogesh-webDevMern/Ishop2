@@ -14,7 +14,7 @@ req.user = decoded;
 next();
         }catch(error)
         {
-            res.send({flag:400}).json({message:"Invalid token"});
+    return  res.send({flag:400,message:"Invalid token"});
         }
 };
 

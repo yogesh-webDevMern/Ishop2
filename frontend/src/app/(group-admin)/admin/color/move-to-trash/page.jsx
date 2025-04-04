@@ -67,7 +67,7 @@ const colorList = async () => {
                         ))}
                     </tbody>
                 </table>
-                {colors.length==0 && <div  className="bg-purple-500 flex gap-4 text-xl text-white p-2 justify-center items-center rounded mt-5 "> The trash is empty right now <FcEmptyTrash /></div> }
+                {/* {colors.length===0 && <div  className="bg-purple-500 flex gap-4 text-xl text-white p-2 justify-center items-center rounded mt-5 "> The trash is empty right now <FcEmptyTrash /></div> } */}
             </div>
         </div>
     );

@@ -1,4 +1,6 @@
 const productModel = require("../models/product.model");
+const categoryModel = require("../models/categorymodel");
+const colorModel = require("../models/color.model");
 const { generateFileName } = require("../helper");
 const fs = require("fs");
 // const ProductRouter = require("../routers/product.router");
@@ -97,9 +99,57 @@ res.send({flag:0,message:"Internal server error"});
     },
     async getAllProducts(req, res) {
         try {
-            const products = req.params.id ? await productModel.findById(req.params.id) : await productModel.find({ deletedAt: null }).populate(
+            const filterQuery={ deletedAt: null };
+            if(req.query.color)
+            {
+                const colors = req.query.color.split("-");
+                const colorIds =[];
+                for(color of colors)
+                {
+                    const colorData = await colorModel.findOne({slug:color});
+                    if(colorData)
+                    {
+                        colorIds.push(colorData._id);
+                    }
+                }
+                filterQuery.colors ={$in:colorIds};
+            }
+            if(req.query.min && req.query.max)
+            {
+                filterQuery.final_price={
+                    $gte:req.query.min,
+                    $lte:req.query.max
+                }
+            }
+            console.log(filterQuery);
+
+            if(req.query.category)
+            {
+                const category = await categoryModel.findOne({slug:req.query.category});
+                if(category)
+                {
+                    filterQuery.category_id = category._id;
+                }
+            }
+            const sortObj={};
+            if(req.query.sortByName)
+            {
+                sortObj.name=Number(req.query.sortByName); 
+            }
+            if(req.query.sortByPrice)
+            {
+                sortObj.final_price=Number(req.query.sortByPrice);
+            }
+            if(req.query.sortByDate)
+            {
+                sortObj.createdAt=Number(req.query.sortByDate);
+            }
+            const limitValue = req.query.sortByLimit ? Number(req.query.sortByLimit) : null;
+            console.log(limitValue);
+
+            const products = req.params.id ? await productModel.findById(req.params.id) : await productModel.find(filterQuery).populate(
                 ['category_id', 'colors']
-            );
+            ).sort(sortObj).limit(limitValue);
             res.send({ products, flag: 1 });
         } catch (error) {
             res.send({ message: "Internal server error", flag: 0 });

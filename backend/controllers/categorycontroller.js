@@ -1,5 +1,6 @@
 // const categoryModel = require("../models/categorymodel");
 const categoryModel = require("../models/categorymodel");
+const productModel = require("../models/product.model");
 const CategoryController={
     async moveToTrash(req,res)
     {
@@ -70,8 +71,42 @@ async read (req,res)
         res.send({categories,flag:1});
     }else
     {
-         categories =await categoryModel.find({deletedAt:null}).sort({createdAt:-1});
-        res.send({categories,total:categories.length,flag:1});
+        const filterd={
+            deletedAt:null
+        };
+        const sort={}
+        if(req.query.status)
+        {
+filterd.status=req.query.status;
+        }
+     
+        if(req.query.sortByName)
+        {
+            sort.name = Number(req.query.sortByName)    ;
+        }
+        else
+        {
+            sort.createdAt=-1
+        }
+        console.log(sort);
+         categories =await categoryModel.find(filterd).sort(sort);
+         const data = [];
+        //  const start = new Date();
+         await Promise.all(
+       categories.map(async(category)=>
+            {
+                const productCount  = await  productModel.find({category_id:category._id}).countDocuments();
+            data.push({
+                ...category.toJSON(),
+                productCount
+            })
+          
+            })
+         )
+         categories=[...data];
+     return   res.send({categories,total:categories.length,flag:1});
+
+  
     }
 
  }catch(error)
